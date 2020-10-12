@@ -1,11 +1,17 @@
 //stores all product objects in an array
 var allProducts = [];
+//assigns each img element as a variable to be used in the render function
+var imgElementOne = document.getElementById('labelOne');
+var imgElementTwo = document.getElementById('labelTwo');
+var imgElementThree = document.getElementById('labelThree');
 
 //constructor function for product object
 function Product(source, name){
   this.source = source;
   this.title = name;
   this.alt = name;
+  this.totalDisplay = 0;
+  this.totalClicks = 0;
 
   allProducts.push(this);
 }
@@ -25,12 +31,22 @@ new Product('img/pen.jpg', 'pen');
 new Product('img/pet-sweep.jpg', 'pet-sweep');
 new Product('img/scissors.jpg', 'scissors');
 new Product('img/shark.jpg', 'shark');
-new Product('img/sweep.jpg', 'sweep');
+new Product('img/sweep.png', 'sweep');
 new Product('img/tauntaun.jpg', 'tauntaun');
 new Product('img/unicorn.jpg', 'unicorn');
-new Product('img/usb.jpg', 'usb');
+new Product('img/usb.gif', 'usb');
 new Product('img/water-can.jpg', 'water-can');
 new Product('img/wine-glass.jpg', 'wine-glass');
 
-console.log(allProducts);
+function getRandomIndex(min, max){
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function imageRender(imageElement){
+  var randomIndex = getRandomIndex(0, allProducts.length - 1);
+
+  imageElement.src = allProducts[randomIndex].source;
+  imageElement.alt = allProducts[randomIndex].name;
+  imageElement.title = allProducts[randomIndex].name;
+}
 
