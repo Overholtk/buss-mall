@@ -53,12 +53,7 @@ function getRandomIndex(min, max){
 
 //renders a random non duplicate image in the specified element
 function imageRender(imageElement){
-//wipes the array if it contains 6 elements
-  if(recentRandomIndex.length >= 6){
-    recentRandomIndex = [];
-    console.log('if is working');
-    console.log(recentRandomIndex);
-  }
+
   var randomIndex = getRandomIndex(0, allProducts.length - 1);
   console.log(randomIndex);
   //checks the generated index against the array to make sure it is not a dupe
@@ -76,6 +71,13 @@ function imageRender(imageElement){
   imageElement.src = allProducts[randomIndex].source;
   imageElement.alt = allProducts[randomIndex].title;
   imageElement.title = allProducts[randomIndex].title;
+
+  //pulls data out of the array once it becomes 5 indecises long
+  if(recentRandomIndex.length >= 5){
+    recentRandomIndex.shift();
+    console.log('if is working');
+    console.log(recentRandomIndex);
+  }
 }
 
 imageRender(imgElementOne);
