@@ -1,3 +1,4 @@
+
 //stores all product objects in an array
 var allProducts = [];
 //assigns each img element as a variable to be used in the render function
@@ -119,6 +120,7 @@ function renderStats(){
     base.appendChild(node);
   }
 }
+
 
 
 
