@@ -1,0 +1,16 @@
+#productImgs img {
+  width: 400px;
+  border: rgb(15, 15, 59) 10px solid;
+}
+
+#stats {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 900px;
+  font-size: 20px;
+}
+
+body{
+  background-color: rgb(110, 117, 131);
+}
