@@ -9,7 +9,7 @@ var recentRandomIndex = [];
 // element with images
 var imgContainer = document.getElementById('productImgs');
 //global variable for total number of rounds
-var rounds = 5;
+var rounds = 25;
 var roundsSoFar = 1;
 
 //constructor function for product object
