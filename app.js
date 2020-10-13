@@ -1,4 +1,4 @@
-
+//Global Variables:
 //stores all product objects in an array
 var allProducts = [];
 //assigns each img element as a variable to be used in the render function
@@ -10,9 +10,14 @@ var recentRandomIndex = [];
 // element with images
 var imgContainer = document.getElementById('producImgs');
 //global variable for total number of rounds
-var rounds = 25;
-var roundsSoFar = 1;
+var rounds = 3;
+var roundsSoFar = 0;
+// array that holds each objects number of clicks
+var objectClickTotals = [];
+// array that holds the names of the objects only
+var objectNamesList = [];
 
+//Constructor function:
 //constructor function for product object
 function Product(source, name){
   this.source = source;
@@ -22,39 +27,18 @@ function Product(source, name){
   this.clicks = 0;
 
   allProducts.push(this);
+  objectNamesList.push(this.title);
 }
 
-//creates object for each product
-new Product('img/bag.jpg', 'bag');
-new Product('img/banana.jpg', 'banana');
-new Product('img/bathroom.jpg', 'bathroom');
-new Product('img/boots.jpg', 'boots');
-new Product('img/breakfast.jpg', 'breakfast');
-new Product('img/bubblegum.jpg', 'bubblegum');
-new Product('img/chair.jpg', 'chair');
-new Product('img/cthulhu.jpg', 'cthulhu');
-new Product('img/dog-duck.jpg', 'dog-duck');
-new Product('img/dragon.jpg', 'dragon');
-new Product('img/pen.jpg', 'pen');
-new Product('img/pet-sweep.jpg', 'pet-sweep');
-new Product('img/scissors.jpg', 'scissors');
-new Product('img/shark.jpg', 'shark');
-new Product('img/sweep.png', 'sweep');
-new Product('img/tauntaun.jpg', 'tauntaun');
-new Product('img/unicorn.jpg', 'unicorn');
-new Product('img/usb.gif', 'usb');
-new Product('img/water-can.jpg', 'water-can');
-new Product('img/wine-glass.jpg', 'wine-glass');
-
-
+//Helper functions:
 //calculates a random number to determine the index of the images displayed
 function getRandomIndex(min, max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+
 //renders a random non duplicate image in the specified element
 function imageRender(imageElement){
-
   var randomIndex = getRandomIndex(0, allProducts.length - 1);
   console.log(randomIndex);
   //checks the generated index against the array to make sure it is not a dupe
@@ -81,14 +65,12 @@ function imageRender(imageElement){
   }
 }
 
-imageRender(imgElementOne);
-imageRender(imgElementTwo);
-imageRender(imgElementThree);
-
+// tallies votes and generates next set of images
 function handleClick(){
   var productChoice = event.target.title;
   console.log(productChoice);
 
+  //tallies vote for chosen object
   for(var i = 0; i < allProducts.length; i++){
     if(productChoice === allProducts[i].title){
       console.log('increasing votes for ' + allProducts[i].title);
@@ -102,14 +84,13 @@ function handleClick(){
   roundsSoFar++;
   console.log(roundsSoFar);
 
+  //removes click handler once the maximum amount of rounds has been reached
   if(roundsSoFar >= rounds){
     imgContainer.removeEventListener('click', handleClick);
   }
 }
 
-imgContainer.addEventListener('click', handleClick);
-document.getElementById('submit').addEventListener('click', renderStats);
-
+// renders voting statistics
 function renderStats(){
   var base = document.getElementById('stats');
   for(var i = 0; i < allProducts.length; i++){
@@ -119,8 +100,117 @@ function renderStats(){
     console.log(allProducts[i].title + ' was seen ' + allProducts[i].seen + ' times and voted for ' + allProducts[i].clicks + ' times.');
     base.appendChild(node);
   }
+  populateClickArray();
+  var chartBase = document.getElementById('stats').getContext('2d');
+  // chartBase.appendChild(chart);
+  var myChart = new Chart(chartBase, {
+    type: 'bar',
+    data: {
+      labels: objectNamesList,
+      datasets: [{
+        label: 'Votes Per Item',
+        data: objectClickTotals,
+        backgroundColor: [
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 206, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)'
+
+        ],
+        borderColor: [
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+          'rgb(209, 209, 209)',
+        ],
+        borderWidth: 6
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+};
+
+
+//puts the vote totals for each object into the objectClickTotals array
+function populateClickArray(){
+  for(var i = 0; i <allProducts.length; i++){
+    objectClickTotals.push(allProducts[i].clicks);
+  }
 }
 
+// creates chart object and populates it with a graph
 
+
+
+//creates object for each product
+new Product('img/bag.jpg', 'bag');
+new Product('img/banana.jpg', 'banana');
+new Product('img/bathroom.jpg', 'bathroom');
+new Product('img/boots.jpg', 'boots');
+new Product('img/breakfast.jpg', 'breakfast');
+new Product('img/bubblegum.jpg', 'bubblegum');
+new Product('img/chair.jpg', 'chair');
+new Product('img/cthulhu.jpg', 'cthulhu');
+new Product('img/dog-duck.jpg', 'dog-duck');
+new Product('img/dragon.jpg', 'dragon');
+new Product('img/pen.jpg', 'pen');
+new Product('img/pet-sweep.jpg', 'pet-sweep');
+new Product('img/scissors.jpg', 'scissors');
+new Product('img/shark.jpg', 'shark');
+new Product('img/sweep.png', 'sweep');
+new Product('img/tauntaun.jpg', 'tauntaun');
+new Product('img/unicorn.jpg', 'unicorn');
+new Product('img/usb.gif', 'usb');
+new Product('img/water-can.jpg', 'water-can');
+new Product('img/wine-glass.jpg', 'wine-glass');
+
+// render initial images
+imageRender(imgElementOne);
+imageRender(imgElementTwo);
+imageRender(imgElementThree);
+
+//adds event listeners
+imgContainer.addEventListener('click', handleClick);
+document.getElementById('submit').addEventListener('click', renderStats);
 
 
