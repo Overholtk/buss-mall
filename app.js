@@ -2,13 +2,13 @@
 //stores all product objects in an array
 var allProducts = [];
 //assigns each img element as a variable to be used in the render function
-var imgElementOne = document.getElementById('labelOne');
-var imgElementTwo = document.getElementById('labelTwo');
-var imgElementThree = document.getElementById('labelThree');
+var imgElementOne = document.getElementById('imgOne');
+var imgElementTwo = document.getElementById('imgTwo');
+var imgElementThree = document.getElementById('imgThree');
 // array of recent indexes
 var recentRandomIndex = [];
 // element with images
-var imgContainer = document.getElementById('productImgs');
+var imgContainer = document.getElementById('producImgs');
 //global variable for total number of rounds
 var rounds = 25;
 var roundsSoFar = 1;

@@ -1,0 +1,14 @@
+#producImgs img{
+  width: 400px;
+  border: rgb(74, 74, 128) 10px solid;
+}
+
+body{
+  background-color: rgb(15, 15, 44);
+}
+
+#stats {
+  color: white;
+  text-align: center;
+  
+}
