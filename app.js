@@ -234,7 +234,7 @@ var productsFromLocalStorage = localStorage.getItem('products');
 var parsedProducts = JSON.parse(productsFromLocalStorage);
 console.log(parsedProducts);
 
-// run data through a new constructor function
+// new constructor function
 function ReconstructProduct (source, name){
   this.source = source;
   this.title = name;
@@ -246,7 +246,14 @@ function ReconstructProduct (source, name){
 
 console.log(parsedProducts[1].source);
 
+// create objects for data from local storage
 for (var i = 0; i < parsedProducts.length; i++){
-console.log(new ReconstructProduct(parsedProducts[i].source, parsedProducts[i].title));
+  new ReconstructProduct(parsedProducts[i].source, parsedProducts[i].title);
+}
+
+// update seen and clicks with data from local storage
+for(var i = 0; i < allProducts.length; i++){
+  this.seen += parsedProducts[i].seen;
+  this.clicks += parsedProducts[i].clicks;
 }
 
