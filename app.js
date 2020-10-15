@@ -16,6 +16,8 @@ var roundsSoFar = 0;
 var objectClickTotals = [];
 // array that holds the names of the objects only
 var objectNamesList = [];
+// array that holds the number of times an object was seen
+var objectSeenTotals = [];
 
 //Constructor function:
 //constructor function for product object
@@ -101,6 +103,7 @@ function renderStats(){
     base.appendChild(node);
   }
   populateClickArray();
+  populateSeenArray();
   var chartBase = document.getElementById('stats').getContext('2d');
   // chartBase.appendChild(chart);
   var myChart = new Chart(chartBase, {
@@ -112,26 +115,25 @@ function renderStats(){
         data: objectClickTotals,
         backgroundColor: [
           'rgba(255, 255, 255, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
           'rgba(255, 255, 255, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
           'rgba(255, 255, 255, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
           'rgba(255, 255, 255, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)'
-
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
+          'rgba(255, 255, 255, 0.8)',
         ],
         borderColor: [
           'rgb(209, 209, 209)',
@@ -168,8 +170,7 @@ function renderStats(){
       }
     }
   });
-};
-
+}
 
 //puts the vote totals for each object into the objectClickTotals array
 function populateClickArray(){
@@ -178,9 +179,18 @@ function populateClickArray(){
   }
 }
 
-// creates chart object and populates it with a graph
+function populateSeenArray(){
+  for(var i = 0; i < allProducts.length; i++){
+    objectSeenTotals.push(allProducts[i].seen);
+  }
+}
 
+// checks for local storage
+function checkLocal(){
+  if(){
 
+  }
+}
 
 //creates object for each product
 new Product('img/bag.jpg', 'bag');
@@ -213,4 +223,36 @@ imageRender(imgElementThree);
 imgContainer.addEventListener('click', handleClick);
 document.getElementById('submit').addEventListener('click', renderStats);
 
+// console.log('my origional array: ' + allProducts);
+
+// turn the array into JSON
+
+var stringifyProducts = JSON.stringify(allProducts);
+console.log('array as JSON: ' + stringifyProducts);
+
+// put JSON into local storage
+localStorage.setItem('products', stringifyProducts);
+
+// get items out of storage
+var productsFromLocalStorage = localStorage.getItem('products');
+
+// parse array back into data
+var parsedProducts = JSON.parse(productsFromLocalStorage);
+console.log(parsedProducts);
+
+// run data through a new constructor function
+function ReconstructProduct (source, name){
+  this.source = source;
+  this.title = name;
+  this.alt = name;
+
+  this.clicksUpdate = 0;
+  this.seenUpdate = 0;
+}
+
+console.log(parsedProducts[1].source);
+
+for (var i = 0; i < parsedProducts.length; i++){
+console.log(new ReconstructProduct(parsedProducts[i].source, parsedProducts[i].title));
+}
 
