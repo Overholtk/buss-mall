@@ -185,12 +185,6 @@ function populateSeenArray(){
   }
 }
 
-// checks for local storage
-function checkLocal(){
-  if(){
-
-  }
-}
 
 //creates object for each product
 new Product('img/bag.jpg', 'bag');
