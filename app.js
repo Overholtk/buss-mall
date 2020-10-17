@@ -24,7 +24,7 @@ if(!localStorage.getItem('products')){
   constructAllItems();
 } else {
   // get items out of storage
-  var productsFromLocalStorage = localStorage.getItem('products');;
+  var productsFromLocalStorage = localStorage.getItem('products');
   // parse array back into data
   var parsedProducts = JSON.parse(productsFromLocalStorage);
   // create objects for data from local storage
@@ -126,52 +126,22 @@ function renderStats(){
       datasets: [{
         label: 'Votes Per Item',
         data: objectClickTotals,
-        backgroundColor: [
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-          'rgba(255, 255, 255, 0.8)',
-        ],
-        borderColor: [
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-          'rgb(209, 209, 209)',
-        ],
-        borderWidth: 6
-      }]
+        backgroundColor: ('rgba(255, 245, 112, 0.8'),
+        borderColor: ('rgba(255,252, 198, 0.9'),
+        borderWidth: 4,
+        hoverBorderWidth: 8,
+        hoverBackgroundColor: ('rgba(255, 245, 112, 0.8)'),
+        hoverBorderColor: ('rgba(255,252, 198, 0.9)'),
+      }, {
+        label: 'Views Per Item',
+        data: objectSeenTotals,
+        backgroundColor: ('rgba(255, 172, 46, 0.8)'),
+        borderColor: ('rgba(255, 189, 88, 0.9)'),
+        borderWidth: 4,
+        hoverBorderWidth: 8,
+        hoverBackgroundColor: ('rgba(255, 172, 46, 0.8)'),
+        hoverBorderColor: ('rgba(255, 189, 88, 0.9)'),
+      }],
     },
     options: {
       scales: {
