@@ -19,14 +19,28 @@ var objectNamesList = [];
 // array that holds the number of times an object was seen
 var objectSeenTotals = [];
 
+//check if there is something in local storage and get storage or create items
+if(!localStorage.getItem('products')){
+  constructAllItems();
+} else {
+  // get items out of storage
+  var productsFromLocalStorage = localStorage.getItem('products');;
+  // parse array back into data
+  var parsedProducts = JSON.parse(productsFromLocalStorage);
+  // create objects for data from local storage
+  for (var i = 0; i < parsedProducts.length; i++){
+    new Product(parsedProducts[i].source, parsedProducts[i].title, parsedProducts[i].seen, parsedProducts[i].clicks);
+  }
+}
+
 //Constructor function:
 //constructor function for product object
-function Product(source, name){
+function Product(source, name, seen = 0, clicks = 0){
   this.source = source;
   this.title = name;
   this.alt = name;
-  this.seen = 0;
-  this.clicks = 0;
+  this.seen = seen;
+  this.clicks = clicks;
 
   allProducts.push(this);
   objectNamesList.push(this.title);
@@ -42,18 +56,14 @@ function getRandomIndex(min, max){
 //renders a random non duplicate image in the specified element
 function imageRender(imageElement){
   var randomIndex = getRandomIndex(0, allProducts.length - 1);
-  console.log(randomIndex);
   //checks the generated index against the array to make sure it is not a dupe
   while(recentRandomIndex.includes(randomIndex)){
     randomIndex = getRandomIndex(0, allProducts.length - 1);
-    console.log(randomIndex);
-    console.log('we changed index');
   }
 
   recentRandomIndex.push(randomIndex);
-  console.log(recentRandomIndex);
   allProducts[randomIndex].seen++;
-  console.log('I saw it!' + allProducts[randomIndex].seen);
+  console.log(allProducts[randomIndex] + ' seen: ' + allProducts[randomIndex].seen++);
   //populates image element
   imageElement.src = allProducts[randomIndex].source;
   imageElement.alt = allProducts[randomIndex].title;
@@ -62,8 +72,6 @@ function imageRender(imageElement){
   //pulls data out of the array once it becomes 5 indecises long
   if(recentRandomIndex.length >= 5){
     recentRandomIndex.shift();
-    console.log('if is working');
-    console.log(recentRandomIndex);
   }
 }
 
@@ -84,11 +92,16 @@ function handleClick(){
   imageRender(imgElementTwo);
   imageRender(imgElementThree);
   roundsSoFar++;
-  console.log(roundsSoFar);
+  console.log('rounds: ' + roundsSoFar);
 
   //removes click handler once the maximum amount of rounds has been reached
   if(roundsSoFar >= rounds){
     imgContainer.removeEventListener('click', handleClick);
+    // turn the array into JSON
+    var stringifyProducts = JSON.stringify(allProducts);
+
+    // put JSON into local storage
+    localStorage.setItem('products', stringifyProducts);
   }
 }
 
@@ -105,7 +118,7 @@ function renderStats(){
   populateClickArray();
   populateSeenArray();
   var chartBase = document.getElementById('stats').getContext('2d');
-  // chartBase.appendChild(chart);
+  //displays chart
   var myChart = new Chart(chartBase, {
     type: 'bar',
     data: {
@@ -178,7 +191,7 @@ function populateClickArray(){
     objectClickTotals.push(allProducts[i].clicks);
   }
 }
-
+//puts the seen totals for each object into the objectSeenTotals array
 function populateSeenArray(){
   for(var i = 0; i < allProducts.length; i++){
     objectSeenTotals.push(allProducts[i].seen);
@@ -187,26 +200,28 @@ function populateSeenArray(){
 
 
 //creates object for each product
-new Product('img/bag.jpg', 'bag');
-new Product('img/banana.jpg', 'banana');
-new Product('img/bathroom.jpg', 'bathroom');
-new Product('img/boots.jpg', 'boots');
-new Product('img/breakfast.jpg', 'breakfast');
-new Product('img/bubblegum.jpg', 'bubblegum');
-new Product('img/chair.jpg', 'chair');
-new Product('img/cthulhu.jpg', 'cthulhu');
-new Product('img/dog-duck.jpg', 'dog-duck');
-new Product('img/dragon.jpg', 'dragon');
-new Product('img/pen.jpg', 'pen');
-new Product('img/pet-sweep.jpg', 'pet-sweep');
-new Product('img/scissors.jpg', 'scissors');
-new Product('img/shark.jpg', 'shark');
-new Product('img/sweep.png', 'sweep');
-new Product('img/tauntaun.jpg', 'tauntaun');
-new Product('img/unicorn.jpg', 'unicorn');
-new Product('img/usb.gif', 'usb');
-new Product('img/water-can.jpg', 'water-can');
-new Product('img/wine-glass.jpg', 'wine-glass');
+function constructAllItems(){
+  var bag = new Product('img/bag.jpg', 'bag');
+  new Product('img/banana.jpg', 'banana');
+  new Product('img/bathroom.jpg', 'bathroom');
+  new Product('img/boots.jpg', 'boots');
+  new Product('img/breakfast.jpg', 'breakfast');
+  new Product('img/bubblegum.jpg', 'bubblegum');
+  new Product('img/chair.jpg', 'chair');
+  new Product('img/cthulhu.jpg', 'cthulhu');
+  new Product('img/dog-duck.jpg', 'dog-duck');
+  new Product('img/dragon.jpg', 'dragon');
+  new Product('img/pen.jpg', 'pen');
+  new Product('img/pet-sweep.jpg', 'pet-sweep');
+  new Product('img/scissors.jpg', 'scissors');
+  new Product('img/shark.jpg', 'shark');
+  new Product('img/sweep.png', 'sweep');
+  new Product('img/tauntaun.jpg', 'tauntaun');
+  new Product('img/unicorn.jpg', 'unicorn');
+  new Product('img/usb.gif', 'usb');
+  new Product('img/water-can.jpg', 'water-can');
+  new Product('img/wine-glass.jpg', 'wine-glass');
+}
 
 // render initial images
 imageRender(imgElementOne);
@@ -217,43 +232,5 @@ imageRender(imgElementThree);
 imgContainer.addEventListener('click', handleClick);
 document.getElementById('submit').addEventListener('click', renderStats);
 
-// console.log('my origional array: ' + allProducts);
 
-// turn the array into JSON
-
-var stringifyProducts = JSON.stringify(allProducts);
-console.log('array as JSON: ' + stringifyProducts);
-
-// put JSON into local storage
-localStorage.setItem('products', stringifyProducts);
-
-// get items out of storage
-var productsFromLocalStorage = localStorage.getItem('products');
-
-// parse array back into data
-var parsedProducts = JSON.parse(productsFromLocalStorage);
-console.log(parsedProducts);
-
-// new constructor function
-function ReconstructProduct (source, name){
-  this.source = source;
-  this.title = name;
-  this.alt = name;
-
-  this.clicksUpdate = 0;
-  this.seenUpdate = 0;
-}
-
-console.log(parsedProducts[1].source);
-
-// create objects for data from local storage
-for (var i = 0; i < parsedProducts.length; i++){
-  new ReconstructProduct(parsedProducts[i].source, parsedProducts[i].title);
-}
-
-// update seen and clicks with data from local storage
-for(var i = 0; i < allProducts.length; i++){
-  this.seen += parsedProducts[i].seen;
-  this.clicks += parsedProducts[i].clicks;
-}
 
