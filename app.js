@@ -10,7 +10,7 @@ var recentRandomIndex = [];
 // element with images
 var imgContainer = document.getElementById('producImgs');
 //global variable for total number of rounds
-var rounds = 3;
+var rounds = 25;
 var roundsSoFar = 0;
 // array that holds each objects number of clicks
 var objectClickTotals = [];
